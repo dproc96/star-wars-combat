@@ -52,7 +52,7 @@ $(document).ready(function() {
                 location.append(element);
             }
         }
-        add($("main"),["<h4>Choose your fighter!</h4>", "<div class='container' id='roster'></div>"]);
+        add($("main"),["<h4>Choose your fighter!</h4>", "<div class='l-container' id='roster'></div>"]);
         add($("#roster"), [characters.luke.image, characters.yoda.image, characters.vader.image, characters.obiwan.image])
     }
 
