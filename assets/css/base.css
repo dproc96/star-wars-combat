@@ -5,21 +5,40 @@ body {
 main {
     display: block;
     width: 80vw;
+    min-height: 400px;
     margin: 10px auto;
+    background-color: #222222;
+    color: #eeeeee;
+    padding: 30px;
 }
 
 h1 {
     font-size: 32px;
     font-weight: 700;
     text-align: center;
+    margin: 15px;
 }
 
 h4 {
     font-size: 20px;
     font-weight: 500;
     text-align: center;
+    padding: 10px;
 }
 
 img {
     width : 200px;
+}
+
+button {
+    background: transparent;
+    outline: none;
+    font-family: 'Press Start 2P', cursive;
+    color: #eeeeee;
+    padding: 10px;
+    font-size: 20px;
+    border-width: 5px;
+    border-style: dotted;
+    display: block;
+    margin: 10px auto;
 }

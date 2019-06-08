@@ -1,0 +1,19 @@
+.border__luke {
+    border-color: blue;
+}
+
+.border__yoda {
+    border-color: darkgreen;
+}
+
+.border__obiwan {
+    border-color: cornflowerblue;
+}
+
+.border__vader {
+    border-color: red;
+}
+
+.vertical-center {
+    vertical-align: center;
+}

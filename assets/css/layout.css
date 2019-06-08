@@ -1,8 +1,45 @@
 .l-container {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .l-container img {
     align-self: flex-end;
+}
+
+.character-card {
+    margin: auto;
+    border-width: 5px;
+    border-style: dotted;
+    display: grid;
+    grid-template-areas: 
+        'name stats'
+        'image stats';
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: max-content auto;
+    width: 80%;
+    height: 80%;
+}
+
+.character-card #name {
+    border-bottom-width: 5px;
+    border-bottom-style: dotted;
+    grid-area: name;
+}
+
+.character-card #image {
+    grid-area: image;
+}
+
+.character-card #image img {
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+}
+
+.character-card #stats {
+    grid-area: stats;
+    border-left-width: 5px;
+    border-left-style: dotted;
 }
