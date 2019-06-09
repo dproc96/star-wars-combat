@@ -47,10 +47,10 @@ $(document).ready(function() {
 
     //Build four character objects of class Character and push them all into an array
     var characters = {};
-    characters.luke = new Character("Luke", "luke", "<img id='luke' src='assets/images/luke.png'>", 4, 6, 3, 8, 7, 12, 6, 90, 90);
-    characters.yoda = new Character("Yoda", "yoda", "<img id='yoda' src='assets/images/yoda.png'>",2, 8, 1, 4, 9, 16, 12, 60, 60);
-    characters.vader = new Character("Darth Vader", "vader", "<img id='vader' src='assets/images/vader.png'>", 5, 5, 2, 10, 6, 14, 7, 75, 75);
-    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 7, 2, 6, 8, 10, 8, 85, 85);
+    characters.luke = new Character("Luke", "luke", "<img id='luke' src='assets/images/luke.png'>", 4, 6, 3, 8, 7, 12, 6, 130, 100);
+    characters.yoda = new Character("Yoda", "yoda", "<img id='yoda' src='assets/images/yoda.png'>",2, 8, 1, 4, 9, 16, 12, 85, 70);
+    characters.vader = new Character("Darth Vader", "vader", "<img id='vader' src='assets/images/vader.png'>", 5, 5, 2, 10, 6, 14, 10, 110, 80);
+    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 9, 2, 6, 10, 11, 8, 100, 90);
 
     
 
@@ -215,7 +215,7 @@ $(document).ready(function() {
                     canClick = false;
                     if (playerCharacter.forceContest > enemyCharacter.forceContest) {
                         enemyCharacter.isDazed = true;
-                        $("#results").html(`<h4>Your Force power has dazed ${enemyCharacter.characterName}, you may now attack twice!</h4>`);
+                        $("#results").html(`<h4>Your Force power has dazed ${enemyCharacter.characterName}, you can take another action!</h4>`);
                         playerTurn();
                         return;
                     }
@@ -236,6 +236,7 @@ $(document).ready(function() {
         $("#force").click(function () { })
         if (enemyCharacter.isDazed) {
             enemyCharacter.isDazed = false;
+            $("#results").html(`<h4>${enemyCharacter.characterName} is dazed and misses his turn!</h4>`)
             playerTurn()
             return;
         }
@@ -254,6 +255,7 @@ $(document).ready(function() {
                             defaultGameState();
                             return;
                         })
+                        return;
                     }
                     playerTurn()
                     return;
