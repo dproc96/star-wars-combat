@@ -8,7 +8,7 @@
     align-self: flex-end;
 }
 
-.character-card {
+.l-character-card {
     margin: auto;
     border-width: 5px;
     border-style: dotted;
@@ -22,24 +22,78 @@
     height: 80%;
 }
 
-.character-card #name {
+.l-character-card #name {
     border-bottom-width: 5px;
     border-bottom-style: dotted;
     grid-area: name;
 }
 
-.character-card #image {
+.l-character-card #image {
     grid-area: image;
 }
 
-.character-card #image img {
+.l-character-card #image img {
     width: 90%;
     margin: auto;
     padding: 10px;
 }
 
-.character-card #stats {
+.l-character-card #stats {
     grid-area: stats;
     border-left-width: 5px;
     border-left-style: dotted;
+}
+
+.l-combat-card {
+    display: grid;
+    grid-template-areas: 
+        'playername enemyname'
+        'playerimage enemyimage'
+        'results results'
+        'actions actions';
+    grid-template-rows: max-content 1fr max-content max-content;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+    border-width: 5px;
+    border-style: dotted;
+    width: 80%;
+    height: 80%;
+}
+
+.l-combat-card #player-name {
+    grid-area: playername;
+}
+
+.l-combat-card #enemy-name {
+    grid-area: enemyname;
+}
+
+.l-combat-card #player-image {
+    grid-area: playerimage;
+    min-height: 250px;
+    position: relative;
+}
+
+.l-combat-card #enemy-image {
+    grid-area: enemyimage;
+    min-height: 250px;
+    position: relative;
+}
+
+.l-combat-card img {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.l-combat-card #results {
+    grid-area: results;
+    border-top-style: dotted;
+    border-top-width: 5px;
+    min-height: 40px;
+}
+
+.l-combat-card #actions {
+    grid-area: actions;
 }
