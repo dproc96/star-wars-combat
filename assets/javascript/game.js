@@ -5,7 +5,7 @@ var isCharacterAvailable = {};
 
 $(document).ready(function() {
     class Character {
-        constructor(characterName, id, image, attackPower, attackBonus, attackIncrement, counterAttackPower, counterAttackBonus, defense, forceStrength, healthPoints, enemyHealthPoints) {
+        constructor(characterName, id, image, attackPower, attackBonus, attackIncrement, counterAttackPower, counterAttackBonus, defense, forceStrength, healthPoints, enemyHealthPoints, audio) {
             this.characterName = characterName;
             this.id = id;
             this.image = image;
@@ -18,6 +18,7 @@ $(document).ready(function() {
             this.forceStrength = forceStrength;
             this.healthPoints = healthPoints;
             this.enemyHealthPoints = enemyHealthPoints;
+            this.audio = audio;
         }
 
         get attack() {
@@ -47,10 +48,10 @@ $(document).ready(function() {
 
     //Build four character objects of class Character and push them all into an array
     var characters = {};
-    characters.luke = new Character("Luke", "luke", "<img id='luke' src='assets/images/luke.png'>", 4, 6, 3, 8, 7, 12, 6, 130, 100);
-    characters.yoda = new Character("Yoda", "yoda", "<img id='yoda' src='assets/images/yoda.png'>",2, 8, 1, 4, 9, 16, 12, 85, 70);
-    characters.vader = new Character("Darth Vader", "vader", "<img id='vader' src='assets/images/vader.png'>", 5, 5, 2, 10, 6, 14, 10, 110, 80);
-    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 9, 2, 6, 10, 11, 8, 100, 90);
+    characters.luke = new Character("Luke", "luke", "<img id='luke' src='assets/images/luke.png'>", 4, 6, 3, 8, 7, 12, 6, 130, 100, "assets/audio/luke.wav");
+    characters.yoda = new Character("Yoda", "yoda", "<img id='yoda' src='assets/images/yoda.png'>", 2, 8, 1, 4, 9, 16, 12, 85, 70, "assets/audio/yoda.wav");
+    characters.vader = new Character("Darth Vader", "vader", "<img id='vader' src='assets/images/vader.png'>", 5, 5, 2, 10, 6, 14, 10, 110, 80, "assets/audio/vader.wav");
+    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 9, 2, 6, 10, 11, 8, 100, 90, "assets/audio/obiwan.mp3");
 
     
 
@@ -73,6 +74,7 @@ $(document).ready(function() {
         add($("main"),["<h4>Choose your fighter!</h4>", "<div class='l-container' id='roster'></div>"]);
         add($("#roster"), [characters.luke.image, characters.yoda.image, characters.vader.image, characters.obiwan.image])
         $("img").click(function() {
+            $("#sound-effect").attr("src", "assets/audio/select.wav")
             generateCharacterCard($(this).attr("id"), true);
         })
     }
@@ -102,6 +104,7 @@ $(document).ready(function() {
         stats.push(`<button id='return' class='border__${name}'>Return</button>`)
         add($("#stats"), stats);
         $("#return").click(function() {
+            $("#sound-effect").attr("src", "assets/audio/return.wav")
             if (isPlayerCharacter) {
                 defaultGameState();
             }
@@ -110,20 +113,25 @@ $(document).ready(function() {
             }
         })
         $("#select").click(function() {
+            $("#sound-effect").attr("src", "assets/audio/select.wav")
             if(isPlayerCharacter) {
-                playerCharacter = new Character(character.characterName, character.id, character.image, character.attackPower, character.attackBonus, character.attackIncrement,character.counterAttackPower,character.counterAttackBonus,character.defense,character.forceStrength,character.healthPoints,character.enemyHealthPoints);
+                playerCharacter = new Character(character.characterName, character.id, character.image, character.attackPower, character.attackBonus, character.attackIncrement,character.counterAttackPower,character.counterAttackBonus,character.defense,character.forceStrength,character.healthPoints,character.enemyHealthPoints, character.audio);
                 playerCharacter.currentHealth = playerCharacter.healthPoints;
                 playerCharacter.isDazed = false;
                 isCharacterAvailable[name] = false;
                 playerCharacter.count = 3;
+                $("#music").attr("src", playerCharacter.audio);
                 enemyPicker();
+                return;
             }
             else {
-                enemyCharacter = new Character(character.characterName, character.id, character.image,character.attackPower, character.attackBonus, character.attackIncrement, character.counterAttackPower, character.counterAttackBonus,character.defense, character.forceStrength, character.healthPoints, character.enemyHealthPoints);
+                enemyCharacter = new Character(character.characterName, character.id, character.image,character.attackPower, character.attackBonus, character.attackIncrement, character.counterAttackPower, character.counterAttackBonus,character.defense, character.forceStrength, character.healthPoints, character.enemyHealthPoints, character.audio);
                 enemyCharacter.currentHealth = enemyCharacter.enemyHealthPoints;
                 enemyCharacter.isDazed = false;
                 isCharacterAvailable[name] = false;
+                $("#music").attr("src", enemyCharacter.audio);
                 beginCombat();
+                return;
             }
         })
     }
@@ -138,6 +146,7 @@ $(document).ready(function() {
             }
         }
         $("img").click(function () {
+            $("#sound-effect").attr("src", "assets/audio/select.wav")
             generateCharacterCard($(this).attr("id"), false);
         })
     }
@@ -159,8 +168,16 @@ $(document).ready(function() {
     function playerTurn() {
         var canClick = true;
         if (playerCharacter.isDazed) {
+            $("#enemy-name").attr("class", `text__${enemyCharacter.id}`);
+            $("#player-name").attr("class", "");
+            setTimeout(function () {
+                $("#sound-effect").attr("src", "assets/audio/dazed.wav")
+                $("#results").html(`<h4>You are dazed and miss your turn!</h4>`);
+                $("#player-name").attr("class", `text__${playerCharacter.id}`);
+                $("#enemy-name").attr("class", "");
+            }, 2000)
             playerCharacter.isDazed = false;
-            setTimeout(function () { enemyTurn() }, 2000);
+            setTimeout(function () { enemyTurn() }, 4000);
             return;
         }
         else {
@@ -170,6 +187,7 @@ $(document).ready(function() {
                 if (canClick) {
                     canClick = false;
                     if (playerCharacter.attack > enemyCharacter.defense) {
+                        $("#sound-effect").attr("src", "assets/audio/lightsaber-hit.mp3")
                         $("#results").html(`<h4>You hit ${enemyCharacter.characterName} for ${playerCharacter.attackPower} damage!</h4>`);
                         enemyCharacter.currentHealth -= playerCharacter.attackPower;
                         var healthPercentage = 100*enemyCharacter.currentHealth/enemyCharacter.enemyHealthPoints;
@@ -182,6 +200,7 @@ $(document).ready(function() {
                             if (playerCharacter.count > 0) {
                                 $("#results").html(`<h4>You defeated ${enemyCharacter.characterName}, ready for your next challenger?</h4>`)
                                 $("#yes").click(function() {
+                                    $("#sound-effect").attr("src", "assets/audio/select.wav")
                                     enemyPicker();
                                     return;
                                 })
@@ -189,7 +208,9 @@ $(document).ready(function() {
                             else {
                                 $("#results").html(`<h4>You defeated all the enemies, want to play again?</h4>`)
                                 $("#yes").click(function () {
+                                    $("#sound-effect").attr("src", "assets/audio/select.wav")
                                     defaultGameState();
+                                    $("#music").attr("src", "assets/audio/main.wav")
                                     return;
                                 })
                             }
@@ -202,6 +223,7 @@ $(document).ready(function() {
                         }
                     }
                     else {
+                        $("#sound-effect").attr("src", "assets/audio/miss.wav")
                         $("#results").html(`<h4>You missed ${enemyCharacter.characterName}</h4>`);
                         $("#player-name").attr("class", `text__${playerCharacter.id}`);
                         $("#enemy-name").attr("class", "");
@@ -214,12 +236,14 @@ $(document).ready(function() {
                 if (canClick) {
                     canClick = false;
                     if (playerCharacter.forceContest > enemyCharacter.forceContest) {
+                        $("#sound-effect").attr("src", "assets/audio/force-daze.wav")
                         enemyCharacter.isDazed = true;
                         $("#results").html(`<h4>Your Force power has dazed ${enemyCharacter.characterName}, you can take another action!</h4>`);
                         playerTurn();
                         return;
                     }
                     else {
+                        $("#sound-effect").attr("src", "assets/audio/miss.wav")
                         $("#results").html(`<h4>The force is strong with ${enemyCharacter.characterName}, he has resisted!</h4>`);
                         $("#player-name").attr("class", `text__${playerCharacter.id}`);
                         $("#enemy-name").attr("class", "");
@@ -235,6 +259,7 @@ $(document).ready(function() {
         $("#attack").click(function () { })
         $("#force").click(function () { })
         if (enemyCharacter.isDazed) {
+            $("#sound-effect").attr("src", "assets/audio/dazed.wav")
             enemyCharacter.isDazed = false;
             $("#results").html(`<h4>${enemyCharacter.characterName} is dazed and misses his turn!</h4>`)
             playerTurn()
@@ -244,6 +269,7 @@ $(document).ready(function() {
             var randomPicker = Math.random()*(enemyCharacter.counterAttackBonus + enemyCharacter.forceStrength/3)
             if (randomPicker < enemyCharacter.counterAttackBonus || playerCharacter.isDazed) {
                 if (enemyCharacter.counterAttack > playerCharacter.defense) {
+                    $("#sound-effect").attr("src", "assets/audio/lightsaber-hit.mp3")
                     $("#results").html(`<h4>${enemyCharacter.characterName} hit you for ${enemyCharacter.counterAttackPower} damage!</h4>`);
                     playerCharacter.currentHealth -= enemyCharacter.counterAttackPower;
                     var healthPercentage = 100 * playerCharacter.currentHealth /playerCharacter.healthPoints;
@@ -252,7 +278,9 @@ $(document).ready(function() {
                         $("#results").html(`<h4>You have been defeated by ${enemyCharacter.characterName}, want to play again?</h4>`)
                         $("#actions").html(`<button id='yes' class='border__${playerCharacter.id}'>Yes!</button>`)
                         $("#yes").click(function () {
+                            $("#sound-effect").attr("src", "assets/audio/select.wav")
                             defaultGameState();
+                            $("#music").attr("src", "assets/audio/main.wav")
                             return;
                         })
                         return;
@@ -261,6 +289,7 @@ $(document).ready(function() {
                     return;
                 }
                 else {
+                    $("#sound-effect").attr("src", "assets/audio/miss.wav")
                     $("#results").html(`<h4>${enemyCharacter.characterName} missed you!</h4>`);
                     playerTurn()
                     return;
@@ -268,12 +297,14 @@ $(document).ready(function() {
             }
             else {
                 if (playerCharacter.forceContest < enemyCharacter.forceContest) {
+                    $("#sound-effect").attr("src", "assets/audio/force-daze.wav")
                     playerCharacter.isDazed = true;
-                    $("#results").html(`<h4>${enemyCharacter.characterName}'s Force power has dazed you, he may now attack twice!</h4>`);
+                    $("#results").html(`<h4>${enemyCharacter.characterName}'s Force power has dazed you, he may now act again!</h4>`);
                     setTimeout(function () { enemyTurn() }, 2000);
                     return;
                 }
                 else {
+                    $("#sound-effect").attr("src", "assets/audio/miss.wav")
                     $("#results").html(`<h4>The force is strong with you, you have resisted ${enemyCharacter.characterName}'s attempt to daze you!</h4>`);
                     playerTurn();
                     return;
