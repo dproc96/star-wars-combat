@@ -11,3 +11,9 @@
     width: 100%;
     height: 100%;
 }
+
+#sound-control {
+    font-size: 25px;
+    color: #dddddd;
+    float: left;
+}

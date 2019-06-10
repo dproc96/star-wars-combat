@@ -51,7 +51,7 @@ $(document).ready(function() {
     characters.luke = new Character("Luke", "luke", "<img id='luke' src='assets/images/luke.png'>", 4, 6, 3, 8, 7, 12, 6, 130, 100, "assets/audio/luke.wav");
     characters.yoda = new Character("Yoda", "yoda", "<img id='yoda' src='assets/images/yoda.png'>", 2, 8, 1, 4, 9, 16, 12, 85, 70, "assets/audio/yoda.wav");
     characters.vader = new Character("Darth Vader", "vader", "<img id='vader' src='assets/images/vader.png'>", 5, 5, 2, 10, 6, 14, 10, 110, 80, "assets/audio/vader.wav");
-    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 9, 2, 6, 10, 11, 8, 100, 90, "assets/audio/obiwan.mp3");
+    characters.obiwan = new Character("Obi Wan", "obiwan", "<img id='obiwan' src='assets/images/obiwan.png'>", 3, 10, 2, 8, 10, 14, 8, 100, 90, "assets/audio/obiwan.mp3");
 
     
 
@@ -69,9 +69,9 @@ $(document).ready(function() {
         for (let key in characters) {
             isCharacterAvailable[key] = true;
         }
-        $("main").empty();
-        $("main").attr("class", "game__player-selection");
-        add($("main"),["<h4>Choose your fighter!</h4>", "<div class='l-container' id='roster'></div>"]);
+        $("#game").empty();
+        $("#game").attr("class", "game__player-selection");
+        add($("#game"),["<h4>Choose your fighter!</h4>", "<div class='l-container' id='roster'></div>"]);
         add($("#roster"), [characters.luke.image, characters.yoda.image, characters.vader.image, characters.obiwan.image])
         $("img").click(function() {
             $("#sound-effect").attr("src", "assets/audio/select.wav")
@@ -81,8 +81,8 @@ $(document).ready(function() {
     
     function generateCharacterCard(name, isPlayerCharacter) {
         var character = characters[name]
-        $("main").empty();
-        add($("main"),[`<div id='card' class='l-character-card border__${name}'>`])
+        $("#game").empty();
+        add($("#game"),[`<div id='card' class='l-character-card border__${name}'>`])
         add($("#card"), [`<div id='name' class='border__${name}'>`, `<div id='image' class='border__${name}'>`, `<div id='stats' class='border__${name}'>`])
         add($("#name"),[`<h4 class="vertical-center">${character.characterName}</h4>`])
         add($("#image"),[character.image])
@@ -137,9 +137,9 @@ $(document).ready(function() {
     }
 
     function enemyPicker() {
-        $("main").empty();
-        $("main").attr("class", "game__player-selection");
-        add($("main"), ["<h4>Choose your enemy!</h4>", "<div class='l-container' id='roster'></div>"]);
+        $("#game").empty();
+        $("#game").attr("class", "game__player-selection");
+        add($("#game"), ["<h4>Choose your enemy!</h4>", "<div class='l-container' id='roster'></div>"]);
         for (let key in isCharacterAvailable) {
             if (isCharacterAvailable[key]) {
                 add($("#roster"), [characters[key].image])
@@ -152,8 +152,8 @@ $(document).ready(function() {
     }
 
     function beginCombat() {
-        $("main").empty();
-        add($("main"), [`<div id='combat-card' class='l-combat-card border__${enemyCharacter.id}'>`])
+        $("#game").empty();
+        add($("#game"), [`<div id='combat-card' class='l-combat-card border__${enemyCharacter.id}'>`])
         add($("#combat-card"),["<div id='player-name'>", "<div id='enemy-name'>", "<div id='player-image'>", "<div id='enemy-image'>", "<div id='health'>", `<div id='results' class='border__${enemyCharacter.id}'>`, "<div id='actions'>"])
         add($("#player-name"), [`<h4>${playerCharacter.characterName}</h4>`, `<div id='player-health-bar' class='health-bar border__${playerCharacter.id}'><div id='player-health' class='health-status background__${playerCharacter.id}'></div></div>`])
         add($("#enemy-name"), [`<h4>${enemyCharacter.characterName}</h4>`, `<div id='enemy-health-bar' class='health-bar border__${enemyCharacter.id}'><div id='enemy-health' class='health-status background__${enemyCharacter.id}'></div></div>`])
@@ -314,6 +314,23 @@ $(document).ready(function() {
     }
 
     defaultGameState();
+
+    var isSoundOn = true;
+
+    $("#sound-control").click(function() {
+        if (isSoundOn) {
+            $("#sound-control").attr("class", "fas fa-volume-mute")
+            isSoundOn = false;
+            $("#music").prop("muted", true);
+            $("#sound-effect").prop("muted", true);
+        }
+        else {
+            $("#sound-control").attr("class", "fas fa-volume-up")
+            isSoundOn = true;
+            $("#music").prop("muted", false);
+            $("#sound-effect").prop("muted", false);
+        }
+    })
 
 
     //Combat setup function
