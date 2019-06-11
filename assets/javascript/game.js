@@ -127,6 +127,8 @@ $(document).ready(function() {
             else {
                 enemyCharacter = new Character(character.characterName, character.id, character.image,character.attackPower, character.attackBonus, character.attackIncrement, character.counterAttackPower, character.counterAttackBonus,character.defense, character.forceStrength, character.healthPoints, character.enemyHealthPoints, character.audio);
                 enemyCharacter.currentHealth = enemyCharacter.enemyHealthPoints;
+                enemyCharacter.relativeAttack = enemyCharacter.attackBonus / (playerCharacter.defense - 10);
+                enemyCharacter.relativeForce = enemyCharacter.forceStrength / playerCharacter.forceStrength;
                 enemyCharacter.isDazed = false;
                 isCharacterAvailable[name] = false;
                 $("#music").attr("src", enemyCharacter.audio);
@@ -266,8 +268,8 @@ $(document).ready(function() {
             return;
         }
         else {
-            var randomPicker = Math.random()*(enemyCharacter.counterAttackBonus + enemyCharacter.forceStrength/3)
-            if (randomPicker < enemyCharacter.counterAttackBonus || playerCharacter.isDazed) {
+            var randomPicker = Math.random()*(enemyCharacter.relativeAttack + enemyCharacter.relativeForce)
+            if (randomPicker < enemyCharacter.relativeAttack || playerCharacter.isDazed) {
                 if (enemyCharacter.counterAttack > playerCharacter.defense) {
                     $("#sound-effect").attr("src", "assets/audio/lightsaber-hit.mp3")
                     $("#results").html(`<h4>${enemyCharacter.characterName} hit you for ${enemyCharacter.counterAttackPower} damage!</h4>`);
