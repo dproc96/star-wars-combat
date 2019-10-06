@@ -4,6 +4,10 @@ A basic Star Wars themed combat role-playing game. This game is balanced with an
 
 ![Screenshot](https://i.imgur.com/YarVcUO.png)
 
+## Instructions
+
+Simply access the deployment [here](dproc96.github.io/star-wars-combat) and turn on your sound to play the game!
+
 ## Technologies Used
 
 * HTML
