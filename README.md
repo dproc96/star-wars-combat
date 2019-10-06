@@ -4,7 +4,10 @@ A basic Star Wars themed combat role-playing game. This game is balanced with an
 
 ## Technologies Used
 
-HTML
-CSS
-Javascript
-JQuery
+* HTML
+
+* CSS
+
+* Javascript
+
+* JQuery
